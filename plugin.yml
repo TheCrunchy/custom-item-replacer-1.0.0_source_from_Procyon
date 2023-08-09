@@ -1,4 +1,4 @@
 name: itemreplacerfix
 main: de.lburgard.replacer.CustomItemReplacer
 version: 1.0
-api-version: 1.20
+api-version: '1.20'

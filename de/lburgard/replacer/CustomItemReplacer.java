@@ -33,10 +33,12 @@ public class CustomItemReplacer extends JavaPlugin
     @Override
     public void onEnable() {
         CustomItemReplacer.instance = this;
-        this.configManager = new ConfigManager();
-        Bukkit.getPluginManager().registerEvents((Listener)new ChestListener(), (Plugin)this);
-        Bukkit.getPluginManager().registerEvents((Listener)new VillagerTradeListener(), (Plugin)this);
+  		instance.getLogger().log(Level.INFO, "LOADING");
+
+        Bukkit.getPluginManager().registerEvents(new ChestListener(), instance);
+        Bukkit.getPluginManager().registerEvents(new VillagerTradeListener(), instance);
         key = new NamespacedKey(instance, "replacer");
+        this.configManager = new ConfigManager();
     }
     
     @Override
@@ -47,9 +49,13 @@ public class CustomItemReplacer extends JavaPlugin
     public void replaceChest(final Inventory inventory) {
         for (final ItemStack itemStack : inventory.getContents()) {
             if (itemStack != null) {
-            	if (itemStack.hasItemMeta() && (itemStack.getItemMeta().getPersistentDataContainer().has(CustomItemReplacer.key, PersistentDataType.BOOLEAN) || itemStack.getItemMeta().hasCustomModelData())) {
-            		instance.getLogger().log(Level.INFO, "Has meta or key");
-            		return;
+            	if (itemStack.hasItemMeta() && itemStack.getItemMeta().getPersistentDataContainer().has(CustomItemReplacer.key, PersistentDataType.BOOLEAN)) {
+            		instance.getLogger().log(Level.INFO, "has key");
+            		continue;
+            	}
+              	if (itemStack.hasItemMeta() && itemStack.getItemMeta().hasCustomModelData()) {
+            		instance.getLogger().log(Level.INFO, "Has meta");
+            		continue;
             	}
              	String customItem;
              	customItem = CustomItemReplacer.getInstance().getConfigManager().getString(itemStack.getType().toString().toLowerCase());

@@ -8,6 +8,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.block.BlockState;
 
 import java.util.Map;
+import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
@@ -35,8 +36,10 @@ public class ChestListener implements Listener
         }
         final Block block = event.getClickedBlock();
         final BlockState state = block.getState();
+     //   System.out.println("test");
+	//	CustomItemReplacer.getInstance().getLogger().log(Level.INFO, "open chest");
         Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(CustomItemReplacer.getInstance(), () -> {
-			
+     
         if (state instanceof Chest) {
             final Chest chest = (Chest)state;
             CustomItemReplacer.getInstance().replaceChest(chest.getInventory());

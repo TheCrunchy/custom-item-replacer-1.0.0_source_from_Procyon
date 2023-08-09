@@ -27,36 +27,41 @@ public class ConfigManager
         if (!CustomItemReplacer.getInstance().getDataFolder().exists()) {
             CustomItemReplacer.getInstance().getDataFolder().mkdir();
         }
-        if (!this.configFile.exists()) {
-            try {
-                final InputStream resource = CustomItemReplacer.getInstance().getResource("config.yml");
-                try {
-                    assert resource != null;
-                    Files.copy(resource, this.configFile.toPath(), new CopyOption[0]);
-                    if (resource != null) {
-                        resource.close();
-                    }
-                }
-                catch (Throwable t) {
-                    if (resource != null) {
-                        try {
-                            resource.close();
-                        }
-                        catch (Throwable exception) {
-                            t.addSuppressed(exception);
-                        }
-                    }
-                    throw t;
-                }
-            }
-            catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        this.config = (FileConfiguration)YamlConfiguration.loadConfiguration(this.configFile);
+        try {
+			if (!this.configFile.exists()) {
+			    try {
+			        final InputStream resource = CustomItemReplacer.getInstance().getResource("config.yml");
+			        try {
+			            assert resource != null;
+			            Files.copy(resource, this.configFile.toPath(), new CopyOption[0]);
+			            if (resource != null) {
+			                resource.close();
+			            }
+			        }
+			        catch (Throwable t) {
+			            if (resource != null) {
+			                try {
+			                    resource.close();
+			                }
+			                catch (Throwable exception) {
+			                    t.addSuppressed(exception);
+			                }
+			            }
+			            throw t;
+			        }
+			    }
+			    catch (IOException e) {
+			        e.printStackTrace();
+			    }
+			}
+			this.config = (FileConfiguration)YamlConfiguration.loadConfiguration(this.configFile);
+		} catch (Throwable e) {
+			// TODO Auto-generated catch block
+		
+		}
     }
     
     public String getString(final String path) {
-        return this.config.getString(path);
+        return this.config.getString("replace_items." + path);
     }
 }
