@@ -51,15 +51,7 @@ public class ChestListener implements Listener
     		return;
     	}
       	String customItem;
-      	if (itemStack.getItemMeta().hasDisplayName() && itemStack.hasItemMeta()) {
-      		customItem = CustomItemReplacer.getInstance().getConfigManager().getString(itemStack.getItemMeta().getDisplayName());
-      	  if (customItem == null) {
-      		customItem = CustomItemReplacer.getInstance().getConfigManager().getString(itemStack.getType().toString().toLowerCase());
-      	  }
-      	}
-      	else {
-      		customItem = CustomItemReplacer.getInstance().getConfigManager().getString(itemStack.getType().toString().toLowerCase());
-      	}
+      	customItem = CustomItemReplacer.getInstance().getConfigManager().getString(itemStack.getType().toString().toLowerCase());
         if (customItem != null) {
             if (CustomStack.isInRegistry(customItem)) {
                 final CustomStack customStack = CustomStack.getInstance(customItem);

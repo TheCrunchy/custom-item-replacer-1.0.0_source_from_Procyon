@@ -11,6 +11,8 @@ import org.bukkit.inventory.MerchantInventory;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import java.util.Map;
+import java.util.logging.Level;
+
 import dev.lone.itemsadder.api.CustomStack;
 import org.bukkit.inventory.Inventory;
 import de.lburgard.replacer.listener.VillagerTradeListener;
@@ -46,20 +48,14 @@ public class CustomItemReplacer extends JavaPlugin
         for (final ItemStack itemStack : inventory.getContents()) {
             if (itemStack != null) {
             	if (itemStack.hasItemMeta() && (itemStack.getItemMeta().getPersistentDataContainer().has(CustomItemReplacer.key, PersistentDataType.BOOLEAN) || itemStack.getItemMeta().hasCustomModelData())) {
+            		instance.getLogger().log(Level.INFO, "Has meta or key");
             		return;
             	}
              	String customItem;
-              	if (itemStack.getItemMeta().hasDisplayName() && itemStack.hasItemMeta()) {
-              		customItem = CustomItemReplacer.getInstance().getConfigManager().getString(itemStack.getItemMeta().getDisplayName());
-              	  if (customItem != null) {
-              		customItem = CustomItemReplacer.getInstance().getConfigManager().getString(itemStack.getType().toString().toLowerCase());
-              	  }
-              	}
-              	else {
-              		customItem = CustomItemReplacer.getInstance().getConfigManager().getString(itemStack.getType().toString().toLowerCase());
-              	}
+             	customItem = CustomItemReplacer.getInstance().getConfigManager().getString(itemStack.getType().toString().toLowerCase());
                 if (customItem != null) {
                     if (CustomStack.isInRegistry(customItem)) {
+                    	instance.getLogger().log(Level.INFO, "replacing item");
                         final CustomStack customStack = CustomStack.getInstance(customItem);
                         final Map<Enchantment, Integer> enchantments = (Map<Enchantment, Integer>)itemStack.getEnchantments();
                         final ItemStack finalItem = customStack.getItemStack();
