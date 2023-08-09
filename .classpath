@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path=""/>
+	<classpathentry kind="lib" path="C:/Users/Cameron/Downloads/api-itemsadder-3.5.0b.jar"/>
+	<classpathentry kind="lib" path="E:/Possible Server/buildtools/spigot-api-1.20.1-R0.1-SNAPSHOT-shaded.jar"/>
+	<classpathentry kind="output" path=""/>
+</classpath>
