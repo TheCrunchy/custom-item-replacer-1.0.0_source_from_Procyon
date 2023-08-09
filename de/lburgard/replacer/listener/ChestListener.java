@@ -50,7 +50,12 @@ public class ChestListener implements Listener
     @EventHandler
     public void onClick(final InventoryClickEvent event) {
     	ItemStack itemStack = event.getCurrentItem();
-    	if (itemStack.hasItemMeta() && (itemStack.getItemMeta().getPersistentDataContainer().has(CustomItemReplacer.key, PersistentDataType.BOOLEAN) || itemStack.getItemMeta().hasCustomModelData())) {
+    	if (itemStack.hasItemMeta() && itemStack.getItemMeta().getPersistentDataContainer().has(CustomItemReplacer.key, PersistentDataType.BOOLEAN)) {
+    		CustomItemReplacer.getInstance().getLogger().log(Level.INFO, "has key");
+    		return;
+    	}
+      	if (itemStack.hasItemMeta() && itemStack.getItemMeta().hasCustomModelData()) {
+      		CustomItemReplacer.getInstance().getLogger().log(Level.INFO, "Has meta");
     		return;
     	}
       	String customItem;
@@ -66,7 +71,8 @@ public class ChestListener implements Listener
                 meta.getPersistentDataContainer().set(CustomItemReplacer.key, PersistentDataType.BOOLEAN, true);
                 finalItem.setItemMeta(meta);
                 itemStack = finalItem;
-              
+                event.setCancelled(true);
+                event.setCurrentItem(finalItem);
             }
         }
     }
