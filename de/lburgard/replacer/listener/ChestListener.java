@@ -53,7 +53,7 @@ public class ChestListener implements Listener
       	String customItem;
       	if (itemStack.getItemMeta().hasDisplayName() && itemStack.hasItemMeta()) {
       		customItem = CustomItemReplacer.getInstance().getConfigManager().getString(itemStack.getItemMeta().getDisplayName());
-      	  if (customItem != null) {
+      	  if (customItem == null) {
       		customItem = CustomItemReplacer.getInstance().getConfigManager().getString(itemStack.getType().toString().toLowerCase());
       	  }
       	}
