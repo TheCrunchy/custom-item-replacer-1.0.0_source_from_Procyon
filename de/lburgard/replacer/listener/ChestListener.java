@@ -9,10 +9,10 @@ import org.bukkit.block.BlockState;
 
 import java.util.Map;
 
+import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import de.lburgard.replacer.CustomItemReplacer;
 import dev.lone.itemsadder.api.CustomStack;
-
 import org.bukkit.block.Chest;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.block.Action;
@@ -35,10 +35,13 @@ public class ChestListener implements Listener
         }
         final Block block = event.getClickedBlock();
         final BlockState state = block.getState();
+        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(CustomItemReplacer.getInstance(), () -> {
+			
         if (state instanceof Chest) {
             final Chest chest = (Chest)state;
             CustomItemReplacer.getInstance().replaceChest(chest.getInventory());
         }
+    	}, (long) 5);
     }
     
     @EventHandler
@@ -47,7 +50,16 @@ public class ChestListener implements Listener
       	if (itemStack.getItemMeta().getPersistentDataContainer().has(CustomItemReplacer.key, PersistentDataType.BOOLEAN)) {
     		return;
     	}
-        final String customItem = CustomItemReplacer.getInstance().getConfigManager().getString(itemStack.getType().toString().toLowerCase());
+      	String customItem;
+      	if (itemStack.getItemMeta().hasDisplayName() && itemStack.hasItemMeta()) {
+      		customItem = CustomItemReplacer.getInstance().getConfigManager().getString(itemStack.getItemMeta().getDisplayName());
+      	  if (customItem != null) {
+      		customItem = CustomItemReplacer.getInstance().getConfigManager().getString(itemStack.getType().toString().toLowerCase());
+      	  }
+      	}
+      	else {
+      		customItem = CustomItemReplacer.getInstance().getConfigManager().getString(itemStack.getType().toString().toLowerCase());
+      	}
         if (customItem != null) {
             if (CustomStack.isInRegistry(customItem)) {
                 final CustomStack customStack = CustomStack.getInstance(customItem);

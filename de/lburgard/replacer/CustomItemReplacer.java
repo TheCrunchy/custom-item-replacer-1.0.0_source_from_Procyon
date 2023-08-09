@@ -48,7 +48,16 @@ public class CustomItemReplacer extends JavaPlugin
             	if (itemStack.getItemMeta().getPersistentDataContainer().has(key, PersistentDataType.BOOLEAN)) {
             		return;
             	}
-                final String customItem = getInstance().getConfigManager().getString(itemStack.getType().toString().toLowerCase());
+             	String customItem;
+              	if (itemStack.getItemMeta().hasDisplayName() && itemStack.hasItemMeta()) {
+              		customItem = CustomItemReplacer.getInstance().getConfigManager().getString(itemStack.getItemMeta().getDisplayName());
+              	  if (customItem != null) {
+              		customItem = CustomItemReplacer.getInstance().getConfigManager().getString(itemStack.getType().toString().toLowerCase());
+              	  }
+              	}
+              	else {
+              		customItem = CustomItemReplacer.getInstance().getConfigManager().getString(itemStack.getType().toString().toLowerCase());
+              	}
                 if (customItem != null) {
                     if (CustomStack.isInRegistry(customItem)) {
                         final CustomStack customStack = CustomStack.getInstance(customItem);
@@ -70,7 +79,16 @@ public class CustomItemReplacer extends JavaPlugin
         for (int i = 0; i < inventory.getMerchant().getRecipeCount(); ++i) {
             final MerchantRecipe recipe = inventory.getMerchant().getRecipe(i);
             final ItemStack itemStack = recipe.getResult();  
-            final String customItem = getInstance().getConfigManager().getString(itemStack.getType().toString().toLowerCase());
+         	String customItem;
+          	if (itemStack.getItemMeta().hasDisplayName() && itemStack.hasItemMeta()) {
+          		customItem = CustomItemReplacer.getInstance().getConfigManager().getString(itemStack.getItemMeta().getDisplayName());
+          	  if (customItem != null) {
+          		customItem = CustomItemReplacer.getInstance().getConfigManager().getString(itemStack.getType().toString().toLowerCase());
+          	  }
+          	}
+          	else {
+          		customItem = CustomItemReplacer.getInstance().getConfigManager().getString(itemStack.getType().toString().toLowerCase());
+          	}
             if (customItem != null) {
                 if (CustomStack.isInRegistry(customItem)) {
                     final CustomStack customStack = CustomStack.getInstance(customItem);
