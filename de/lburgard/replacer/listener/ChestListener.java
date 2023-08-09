@@ -47,7 +47,7 @@ public class ChestListener implements Listener
     @EventHandler
     public void onClick(final InventoryClickEvent event) {
     	ItemStack itemStack = event.getCurrentItem();
-      	if (itemStack.getItemMeta().getPersistentDataContainer().has(CustomItemReplacer.key, PersistentDataType.BOOLEAN)) {
+    	if (itemStack.hasItemMeta() && (itemStack.getItemMeta().getPersistentDataContainer().has(CustomItemReplacer.key, PersistentDataType.BOOLEAN) || itemStack.getItemMeta().hasCustomModelData())) {
     		return;
     	}
       	String customItem;

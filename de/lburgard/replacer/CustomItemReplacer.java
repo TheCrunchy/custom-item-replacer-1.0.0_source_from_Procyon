@@ -45,7 +45,7 @@ public class CustomItemReplacer extends JavaPlugin
     public void replaceChest(final Inventory inventory) {
         for (final ItemStack itemStack : inventory.getContents()) {
             if (itemStack != null) {
-            	if (itemStack.getItemMeta().getPersistentDataContainer().has(key, PersistentDataType.BOOLEAN)) {
+            	if (itemStack.hasItemMeta() && (itemStack.getItemMeta().getPersistentDataContainer().has(CustomItemReplacer.key, PersistentDataType.BOOLEAN) || itemStack.getItemMeta().hasCustomModelData())) {
             		return;
             	}
              	String customItem;
