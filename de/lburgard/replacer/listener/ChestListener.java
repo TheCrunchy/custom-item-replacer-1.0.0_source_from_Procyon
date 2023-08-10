@@ -18,7 +18,9 @@ import org.bukkit.block.Chest;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryPickupItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
@@ -46,16 +48,51 @@ public class ChestListener implements Listener
         }
     	}, (long) 5);
     }
-    
     @EventHandler
-    public void onClick(final InventoryClickEvent event) {
-    	ItemStack itemStack = event.getCurrentItem();
+    public void onClick(final InventoryPickupItemEvent event) {
+    	if (event.getItem() == null) {
+    		return;
+    	}
+    	ItemStack itemStack = event.getItem().getItemStack();
+		if (itemStack == null)
+			return;
+
     	if (itemStack.hasItemMeta() && itemStack.getItemMeta().getPersistentDataContainer().has(CustomItemReplacer.key, PersistentDataType.BOOLEAN)) {
-    		CustomItemReplacer.getInstance().getLogger().log(Level.INFO, "has key");
+    	//	CustomItemReplacer.getInstance().getLogger().log(Level.INFO, "has key");
     		return;
     	}
       	if (itemStack.hasItemMeta() && itemStack.getItemMeta().hasCustomModelData()) {
-      		CustomItemReplacer.getInstance().getLogger().log(Level.INFO, "Has meta");
+      	//	CustomItemReplacer.getInstance().getLogger().log(Level.INFO, "Has meta");
+    		return;
+    	}
+      	String customItem;
+      	customItem = CustomItemReplacer.getInstance().getConfigManager().getString(itemStack.getType().toString().toLowerCase());
+        if (customItem != null) {
+            if (CustomStack.isInRegistry(customItem)) {
+                final CustomStack customStack = CustomStack.getInstance(customItem);
+                final Map<Enchantment, Integer> enchantments = (Map<Enchantment, Integer>)itemStack.getEnchantments();
+                final ItemStack finalItem = customStack.getItemStack();
+                finalItem.addUnsafeEnchantments((Map)enchantments);
+                finalItem.setAmount(itemStack.getAmount());
+                ItemMeta meta = finalItem.getItemMeta();
+                meta.getPersistentDataContainer().set(CustomItemReplacer.key, PersistentDataType.BOOLEAN, true);
+                finalItem.setItemMeta(meta);
+                event.getItem().setItemStack(finalItem);
+            }
+        }
+    }
+    @EventHandler
+    public void onClick(final InventoryClickEvent event) {
+    	ItemStack itemStack = event.getCurrentItem();
+		if (itemStack == null)
+			return;
+
+    	if (itemStack.hasItemMeta() && itemStack.getItemMeta().getPersistentDataContainer().has(CustomItemReplacer.key, PersistentDataType.BOOLEAN)) {
+    	//	CustomItemReplacer.getInstance().getLogger().log(Level.INFO, "has key");
+    		return;
+    	}
+      	if (itemStack.hasItemMeta() && itemStack.getItemMeta().hasCustomModelData()) {
+      //		CustomItemReplacer.getInstance().getLogger().log(Level.INFO, "Has meta");
     		return;
     	}
       	String customItem;

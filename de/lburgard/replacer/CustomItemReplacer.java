@@ -33,7 +33,7 @@ public class CustomItemReplacer extends JavaPlugin
     @Override
     public void onEnable() {
         CustomItemReplacer.instance = this;
-  		instance.getLogger().log(Level.INFO, "LOADING");
+  		//instance.getLogger().log(Level.INFO, "LOADING");
 
         Bukkit.getPluginManager().registerEvents(new ChestListener(), instance);
         Bukkit.getPluginManager().registerEvents(new VillagerTradeListener(), instance);
@@ -50,18 +50,18 @@ public class CustomItemReplacer extends JavaPlugin
         for (final ItemStack itemStack : inventory.getContents()) {
             if (itemStack != null) {
             	if (itemStack.hasItemMeta() && itemStack.getItemMeta().getPersistentDataContainer().has(CustomItemReplacer.key, PersistentDataType.BOOLEAN)) {
-            		instance.getLogger().log(Level.INFO, "has key");
+            	//	instance.getLogger().log(Level.INFO, "has key");
             		continue;
             	}
               	if (itemStack.hasItemMeta() && itemStack.getItemMeta().hasCustomModelData()) {
-            		instance.getLogger().log(Level.INFO, "Has meta");
+            //		instance.getLogger().log(Level.INFO, "Has meta");
             		continue;
             	}
              	String customItem;
              	customItem = CustomItemReplacer.getInstance().getConfigManager().getString(itemStack.getType().toString().toLowerCase());
                 if (customItem != null) {
                     if (CustomStack.isInRegistry(customItem)) {
-                    	instance.getLogger().log(Level.INFO, "replacing item");
+                   // 	instance.getLogger().log(Level.INFO, "replacing item");
                         final CustomStack customStack = CustomStack.getInstance(customItem);
                         final Map<Enchantment, Integer> enchantments = (Map<Enchantment, Integer>)itemStack.getEnchantments();
                         final ItemStack finalItem = customStack.getItemStack();
